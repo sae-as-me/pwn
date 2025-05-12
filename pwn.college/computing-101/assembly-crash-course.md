@@ -1,5 +1,5 @@
 ```sh
-as -o yyy.o zzz.s && ld -o xxx yyy.o && /challenge/check xxx
+as -o yyy.o zzz.s && ld -o xxx yyy.o && /challenge/run xxx
 ```
 ## set-register
 ```s
