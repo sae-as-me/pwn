@@ -32,6 +32,13 @@ add rdi,0x331337
 ```
 ## linear-equation-registers
 ```s
+.intel_syntax noprefix
+.global _start
+_start:
+
+mov rax,rdi
+imul rax,rsi
+add rax,rdx
 
 ```
 ## integer-division
