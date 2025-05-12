@@ -1,3 +1,6 @@
+```sh
+as -o yyy.o zzz.s && ld -o xxx yyy.o && /challenge/check xxx
+```
 ## set-register
 ```s
 
