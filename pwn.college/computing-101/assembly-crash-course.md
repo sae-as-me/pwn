@@ -362,10 +362,55 @@ while:
 ```
 ## count-non-zero
 ```s
+.intel_syntax noprefix
+.global _start
+_start:
+    xor rax,rax
+    cmp rdi,0
+    je done
+while:
+    mov cl,[rdi]
+    add rdi,1
+    cmp cl,0
+    je done
+    add rax,1
+    jmp while
+done:
+    nop
 
 ```
 ## string-lower
+**paras: rdi, rsi, rdx, rcx, r8, r9, stack**
+
+**return: rax \(64\) or rdx|rax \(128\)**
 ```s
+
+.intel_syntax noprefix
+.global _start
+_start:
+str_lower:
+    xor rbx,rbx
+    cmp rdi,0
+    je done
+    mov rdx,rdi
+while:
+    mov cl,[rdx]
+    cmp cl,0
+    je done
+    cmp cl,0x5a
+    jg greater5a
+    xor rdi,rdi
+    xor dil,[rdx]
+    mov rax,0x403000
+    call rax
+    mov [rdx],al
+    add rbx,1
+greater5a:
+    add rdx,1
+    jmp while
+done:
+    mov rax,rbx
+    ret
 
 ```
 ## most-common-byte
