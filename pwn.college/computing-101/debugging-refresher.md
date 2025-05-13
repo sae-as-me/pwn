@@ -1,5 +1,36 @@
-**`source aaa.gdb`** 
+## 1
+```gdb
+r
+c
+```
+## 2
+```gdb
+r
+p/x $r12
+c
+```
+## 3
+```gdb
+r
+set disassembly-flavor intel
+disas main
+
+c
+x/gx $rbp-0x18
+```
+## 4
+```gdb
+r
+set disassembly-flavor intel
+disas main
+b *0x00005959c7d80cab
+c
+x/gx $rbp-0x18
+c
+...
+```
 ## level5
+**`source aaa.gdb`** 
 ```gdb
 r
 b *main+709
