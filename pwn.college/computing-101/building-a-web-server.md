@@ -378,7 +378,7 @@ read1:
     mov rdx,0x100               # <read_request_count>
     mov rax,0                   # syscall number of read
     syscall
-    mov byte ptr [rsp+20],0      # to make the file string using '\x00'
+    mov byte ptr [rsp+20],0     # to make the file string using '\x00'
 open:
     mov rdi,rsp
     add rdi,4                   # del 'GET ' and point to '/'
