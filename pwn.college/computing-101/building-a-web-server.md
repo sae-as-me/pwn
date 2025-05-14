@@ -19,6 +19,7 @@ _start:
 ```
 ## Socket
 IPv4的`AF_INET`值是**2**
+
 TCP的`SOCK_STREAM`常见是**1**
 ```asm
 .intel_syntax noprefix
