@@ -169,6 +169,70 @@ exit:
 ```
 ## Static Response
 ```asm
+.intel_syntax noprefix
+.globl _start
+
+.section .text
+
+_start:
+
+socket:
+    mov rdi,2                   # AF_INET for IPv4 is 2
+    mov rsi,1                   # SOCK_STREAM for TCP is 1
+    mov rdx,0                   # the protocol (usually set to 0 to choose the default)
+    mov rax,41                  # syscall number of socket
+    syscall
+    mov r10,rax                 # save sockfd
+bind:
+    mov rdi,r10                 # the socket file descriptor, gen by socket() and stored in rax
+    xor rbx,rbx                 # rbx=0
+    push rbx                    # \x00 * 8 : uint8_t __pad[8]
+    mov rbx,0x0000000050000002  # little endian [2, 80, 0.0.0.0]:[AF_INET, htons(80), inet_addr("0.0.0.0")] 
+    push rbx                    # push to stack, then rsp pointer to this struct sockaddr
+    mov rsi,rsp                 
+    mov rdx,0x10                # the size of that structure
+    mov rax,49                  # syscall number of bind
+    syscall
+listen:
+    mov rdi,r10                 # the socket’s file descriptor
+    mov rsi,0                   # a backlog parameter, which sets the maximum number of queued connections
+    mov rax,50                  # syscall number of listen
+    syscall
+accept:
+    mov rdi,r10                 # sockfd
+    mov rsi,0                   # NULL
+    mov rdx,0                   # NULL
+    mov rax,43                  # syscall number of accept
+    syscall
+    mov r9,rax
+read:
+    mov rdi,r9                  # the value returned from accept
+    mov rsi,rsp                 # addr to store <read_request>
+    mov rdx,0x100               # <read_request_count>
+    mov rax,0                   # syscall number of read
+    syscall
+write:
+    mov rdi,r9                  # the value returned from accept
+    mov rbx,0x00000000000a0d0a  # '\n\r\n'
+    push rbx
+    mov rbx,0x0d4b4f2030303220  # ' 200 OK\r'
+    push rbx
+    mov rbx,0x302e312f50545448  # 'HTTP/1.0'
+    push rbx
+    mov rsi,rsp                 # a pointer to a data buffer
+    mov rdx,19                  # the number of bytes to write
+    mov rax,1                   # syscall number of write
+    syscall
+close:
+    mov rdi,r9                  # the value returned from accept
+    mov rax,3                   # syscall number of close
+    syscall
+exit:
+    xor rdi,rdi                 # 0
+    mov rax,60                  # syscall number of exit
+    syscall
+
+.section .data
 
 ```
 ## Dynamic Response
