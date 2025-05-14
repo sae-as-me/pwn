@@ -541,6 +541,131 @@ exit:
 ```
 ## Concurrent POST Server
 ```asm
+.intel_syntax noprefix
+.globl _start
+
+.section .text
+
+_start:
+
+socket:
+    mov rdi,2                   # AF_INET for IPv4 is 2
+    mov rsi,1                   # SOCK_STREAM for TCP is 1
+    mov rdx,0                   # the protocol (usually set to 0 to choose the default)
+    mov rax,41                  # syscall number of socket
+    syscall
+    mov r10,rax                 # save sockfd
+bind:
+    mov rdi,r10                 # the socket file descriptor, gen by socket() and stored in rax
+    xor rbx,rbx                 # rbx=0
+    push rbx                    # \x00 * 8 : uint8_t __pad[8]
+    mov rbx,0x0000000050000002  # little endian [2, 80, 0.0.0.0]:[AF_INET, htons(80), inet_addr("0.0.0.0")] 
+    push rbx                    # push to stack, then rsp pointer to this struct sockaddr
+    mov rsi,rsp                 
+    mov rdx,0x10                # the size of that structure
+    mov rax,49                  # syscall number of bind
+    syscall
+listen:
+    mov rdi,r10                 # the socket’s file descriptor
+    mov rsi,0                   # a backlog parameter, which sets the maximum number of queued connections
+    mov rax,50                  # syscall number of listen
+    syscall
+accept:
+    mov rdi,r10                 # sockfd
+    mov rsi,0                   # NULL
+    mov rdx,0                   # NULL
+    mov rax,43                  # syscall number of accept
+    syscall
+    iferr:
+        cmp rax,-1              # return -1 if accept error
+        je exit 
+    else:
+        mov r9,rax              # save accept fd
+fork:
+    mov rax,57                  # syscall number of fork
+    syscall
+    ifnochild:
+        cmp rax,0               # is it parent process?
+        jne close3              # the parent process immediately returns to accept additional connections
+close1:
+    mov rdi,r10                 # parent process fd
+    mov rax,3
+    syscall
+read1:
+    mov rdi,r9                  # the value returned from accept
+    mov rsi,rsp                 # addr to store <read_request>
+    mov rdx,0x1000              # <read_request_count>
+    mov rax,0                   # syscall number of read
+    syscall
+    mov byte ptr [rsp+21],0      # to make the file string using '\x00'
+open:
+    mov rdi,rsp
+    add rdi,5                   # del 'POST ' and point to '/'
+    mov rsi,1                   # O_WRONLY
+    or rsi,0100                 # O_WRONLY|O_CREAT
+    mov rdx,0777                # 0777
+    mov rax,2                   # syscall number of open
+    syscall
+    mov r8,rax                  # save fd
+
+    mov rcx,rsp                 # search for length start addr
+    add rcx,160
+lengthstart:
+    mov rbx,[rcx]               
+    mov rax,0x203a6874676e654c  # 'Length: '
+    cmp rbx,rax                 
+    je lengthend
+    inc rcx
+    jmp lengthstart
+lengthend:
+    add rcx,8                   # locate the 1st number position
+    xor rbx,rbx
+    add bl,[rcx]
+    sub bl,0x30
+lengthcount:
+    inc rcx
+    mov al,[rcx]
+    cmp al,0x0d
+    je write1
+    imul rbx,10
+    add bl,[rcx]
+    sub bl,0x30
+    jmp lengthcount
+write1:
+    mov rdi,r8                  # the value returned from open
+    mov rsi,rcx                 # a pointer to a data buffer-4
+    add rsi,4                   # a pointer to a data buffer
+    mov rdx,rbx                 # the number of bytes to write
+    mov rax,1                   # syscall number of write
+    syscall
+close2:
+    mov rdi,r8                  # fd by open
+    mov rax,3                   # syscall number of close
+    syscall
+write2:
+    mov rdi,r9                  # the value returned from accept
+    mov rbx,0x00000000000a0d0a  # '\n\r\n'
+    push rbx
+    mov rbx,0x0d4b4f2030303220  # ' 200 OK\r'
+    push rbx
+    mov rbx,0x302e312f50545448  # 'HTTP/1.0'
+    push rbx
+    mov rsi,rsp                 # a pointer to a data buffer
+    mov rdx,19                  # the number of bytes to write
+    mov rax,1                   # syscall number of write
+    syscall
+    jmp exit                    # child process exit
+close3:
+    mov rdi,r9                  # the value returned from accept
+    mov rax,3                   # syscall number of close
+    syscall
+    jmp accept
+exit:
+    xor rdi,rdi                 # 0
+    mov rax,60                  # syscall number of exit
+    syscall
+
+.section .data
 
 ```
 ## Web Server
