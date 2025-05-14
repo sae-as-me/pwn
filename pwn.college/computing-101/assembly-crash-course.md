@@ -380,7 +380,7 @@ done:
 
 ```
 ## string-lower
-**paras: rdi, rsi, rdx, rcx, r8, r9, stack**
+**paras: rdi, rsi, rdx, rcx, r10, r8, r9, stack**
 
 **return: rax \(64\) or rdx|rax \(128\)**
 ```s
