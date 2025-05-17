@@ -9,6 +9,9 @@
 
 ![图片](https://github.com/user-attachments/assets/38ff999a-07f2-4e20-be0b-c2b334a53c96)
 
+![图片](https://github.com/user-attachments/assets/8fe712d1-8a9f-4666-a2d1-87269b321048)
+
+
 ```sh
 # compile to elf
 gcc -nostdlib -static shellcode.s -o sc-elf
