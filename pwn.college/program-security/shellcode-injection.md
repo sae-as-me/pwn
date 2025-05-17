@@ -7,6 +7,15 @@
 
 [x86asm reference](http://ref.x86asm.net/coder64.html): Decode the bytes into moves, turning the tables on any challenge.
 
+```sh
+# compile to elf
+gcc -nostdlib -static shellcode.s -o sc-elf
+```
+```sh
+# raw bytes
+objcopy --dump-section .text=sc-raw sc-elf
+```
+
 ## 4
 
 ## 5
