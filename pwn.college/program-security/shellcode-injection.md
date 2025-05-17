@@ -7,6 +7,8 @@
 
 [x86asm reference](http://ref.x86asm.net/coder64.html): Decode the bytes into moves, turning the tables on any challenge.
 
+![图片](https://github.com/user-attachments/assets/38ff999a-07f2-4e20-be0b-c2b334a53c96)
+
 ```sh
 # compile to elf
 gcc -nostdlib -static shellcode.s -o sc-elf
