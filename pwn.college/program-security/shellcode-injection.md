@@ -15,6 +15,11 @@ gcc -nostdlib -static shellcode.s -o sc-elf
 # raw bytes
 objcopy --dump-section .text=sc-raw sc-elf
 ```
+```sh
+# to debug
+strace ./sc-elf
+gdb ./sc-elf
+```
 
 ## 4
 
