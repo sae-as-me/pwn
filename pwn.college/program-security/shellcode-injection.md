@@ -25,6 +25,7 @@ objcos --dump-section .text=sc-raw sc-elf
 strace ./sc-elf
 gdb ./sc-elf
 ```
+![图片](https://github.com/user-attachments/assets/de1bf64d-7fd0-48af-bfdd-fa25089b2fbd)
 
 ## 4
 ```s
