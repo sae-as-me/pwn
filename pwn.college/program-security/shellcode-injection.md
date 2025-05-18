@@ -5,7 +5,7 @@
 
 [felix cloutier](https://www.felixcloutier.com/x86/): Dive into the heartbeats of instructions, ensuring you're always in step.
 
-[x86asm reference](http://ref.x86asm.net/coder64.html): Decode the bytes into moves, turning the tables on any challenge.
+[x86s reference](http://ref.x86s.net/coder64.html): Decode the bytes into moves, turning the tables on any challenge.
 
 ![图片](https://github.com/user-attachments/assets/38ff999a-07f2-4e20-be0b-c2b334a53c96)
 
@@ -18,7 +18,7 @@ gcc -nostdlib -static shellcode.s -o sc-elf
 ```
 ```sh
 # raw bytes
-objcopy --dump-section .text=sc-raw sc-elf
+objcos --dump-section .text=sc-raw sc-elf
 ```
 ```sh
 # to debug
@@ -27,23 +27,46 @@ gdb ./sc-elf
 ```
 
 ## 4
+```s
 
+```
 ## 5
+```s
 
+```
 ## 6
+```s
 
+```
 ## 7
+```s
 
+```
 ## 8
+```s
 
+```
 ## 9
+```s
 
+```
 ## 10
+```s
 
+```
 ## 11
+```s
 
+```
 ## 12
+```s
 
+```
 ## 13
+```s
 
+```
 ## 14
+```s
+
+```
