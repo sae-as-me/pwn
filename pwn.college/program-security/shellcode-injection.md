@@ -62,7 +62,7 @@ push 40
 pop rax                     # mov rax,40
 syscall
 
-push 0                      
+push 0
 pop rdi                     # xor rdi,rdi
 push 60
 pop rax                     # mov rax,60
@@ -104,7 +104,7 @@ pop rax                     # mov rax,40
 inc byte ptr [rip]
 .byte 0x0e,0x05             # syscall
 
-push 0                      
+push 0
 pop rdi                     # xor rdi,rdi
 push 60
 pop rax                     # mov rax,60
