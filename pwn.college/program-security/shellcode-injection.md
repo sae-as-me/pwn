@@ -41,31 +41,31 @@ gcc -nostdlib -static zzz.s -o yyy && objcopy --dump-section .text=xxx yyy
 _start:
 
 push 0x616c662f
-mov dword ptr [rsp+4],0x67
+mov dword ptr [rsp+4],0x67  # mov rbx,0x00000067616c662f; push rbx
 push rsp
-pop rdi
+pop rdi                     # mov rdi,rsp
 push 0
-pop rsi
+pop rsi                     # xor rsi,rsi
 push 2
-pop rax
+pop rax                     # mov rax,2
 syscall
 
 push 1
-pop rdi
+pop rdi                     # mov rdi,1
 push rax
-pop rsi
+pop rsi                     # mov rsi,rax
 push 0
-pop rdx
+pop rdx                     # xor rdx,rdx
 push 60
-pop r10
+pop r10                     # mov r10,60
 push 40
-pop rax
+pop rax                     # mov rax,40
 syscall
 
-push 0
-pop rdi
+push 0                      
+pop rdi                     # xor rdi,rdi
 push 60
-pop rax
+pop rax                     # mov rax,60
 syscall
 
 .section .data
