@@ -163,7 +163,7 @@ inc byte ptr [rip]
 
 ```
 ## 7
-把flag写到/tmp/fl里
+把flag写到/tmp/fl里 
 ```s
 .intel_syntax noprefix
 .globl _start
